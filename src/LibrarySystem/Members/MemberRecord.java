@@ -4,7 +4,7 @@ import LibrarySystem.Enums.MemberType;
 
 import java.time.LocalDateTime;
 
-public class MemberRecord {
+public abstract class MemberRecord {
     private Long memberID;
     private MemberType type;
     private LocalDateTime dateOfMemberShip;
@@ -24,5 +24,21 @@ public class MemberRecord {
         noBooksIssued = false;
     }
 
-    
+    public boolean getNoBooksIssued()
+    {
+        return noBooksIssued;
+    }
+
+    public void setNoBooksIssued(boolean noBooksIssued)
+    {
+        this.noBooksIssued =noBooksIssued;
+    }
+
+    public abstract Object getMember();
+
+    public abstract void incrementBookIssued();
+
+    public abstract void decrementBookIssued();
+
+    public abstract void payBill();
 }

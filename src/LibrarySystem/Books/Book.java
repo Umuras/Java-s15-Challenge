@@ -10,25 +10,31 @@ public class Book {
     private Long bookID;
     private String name;
     private Double price;
-    private String authorName;
+    private Author author;
     private BookStatus status;
     private Double edition;
     private LocalDateTime dateOfPurchase;
+    private Reader reader;
+    //private static int bookID = 1;
 
-    public Book(Long bookID, String authorName, String name, Double price, Double edition)
+    public Book(Long bookID, Author author, String name, Double price, Double edition)
     {
         this.bookID = bookID;
-        Author author = new Author(authorName, this);
+        this.author = author;
         this.name = name;
         this.price = price;
         this.edition = edition;
-        dateOfPurchase = LocalDateTime.now();
         status = BookStatus.INLIBRARY;
     }
 
     public String getName()
     {
         return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     public Long getBookID()
@@ -41,24 +47,49 @@ public class Book {
         return price;
     }
 
+    public void setPrice(Double price)
+    {
+        this.price = price;
+    }
+
     public Double getEdition()
     {
         return edition;
     }
 
-    public String getAuthor()
+    public void setEdition(Double edition)
     {
-        return authorName;
+        this.edition = edition;
     }
 
-    public String getOwner(Reader reader)
+    public Author getAuthor()
     {
-       return reader.getName();
+        return author;
     }
 
-    public void changeOwner()
+    public void setAuthor(Author author)
     {
+        this.author = author;
+    }
 
+    public LocalDateTime getDateOfPurchase()
+    {
+        return dateOfPurchase;
+    }
+
+    public Reader getOwner()
+    {
+        if(reader != null)
+        {
+            return reader;
+        }
+        System.out.println("This book hasn't a reader");
+        return null;
+    }
+
+    public void changeOwner(Reader newReader)
+    {
+        newReader = reader;
     }
 
     public void display()
@@ -66,18 +97,21 @@ public class Book {
         StringBuilder strBuilder = new StringBuilder();
         strBuilder.append("BookID: ").append(bookID).append("\n");
         strBuilder.append("BookName: ").append(name).append("\n");
-        strBuilder.append("Book's Author: ").append(authorName).append("\n");
+        strBuilder.append("Book's Author: ").append(author.getName()).append("\n");
         strBuilder.append("Price: ").append(price).append("\n");
         strBuilder.append("Status: ").append(status).append("\n");
         strBuilder.append("Edition: ").append(edition).append("\n");
-        strBuilder.append("DateOfPurchase: ").append(dateOfPurchase);
 
         System.out.println(strBuilder);
     }
 
-    public void updateStatus()
+    public void updateStatus(BookStatus status)
     {
-
+        if(BookStatus.BORROWLIBRARYBOOK.name().equals(status.name()))
+        {
+            this.dateOfPurchase = LocalDateTime.now();
+        }
+        this.status = status;
     }
 
 
@@ -95,8 +129,8 @@ public class Book {
         }
 
         Book book = (Book)obj;
-        return this.name.equals(book.getName()) && this.bookID.equals(book.getBookID()) &&
-                this.authorName.equals(book.getAuthor()) && this.edition.equals(book.getEdition());
+        return this.name.equals(book.getName()) &&
+                this.author.getName().equals(book.getAuthor().getName());
     }
 
     @Override

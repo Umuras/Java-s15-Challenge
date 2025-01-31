@@ -2,17 +2,19 @@ package Users;
 
 import LibrarySystem.Books.Book;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class Author extends Person{
 
     private List<Book> authorBooks;
 
-    public Author(String name, Book book)
+    public Author(String name)
     {
         super(name);
-        addNewBook(book);
+        authorBooks = new ArrayList<>();
     }
 
     public void showBook()
@@ -47,9 +49,37 @@ public class Author extends Person{
 
     }
 
+    public List<Book> getAuthorBooks()
+    {
+        return authorBooks;
+    }
+
 
     @Override
     public void whoYouAre() {
         System.out.println("Author: " + super.getName());
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+      if(this == obj)
+      {
+          return true;
+      }
+
+      if (obj == null || this.getClass() != obj.getClass())
+      {
+          return false;
+      }
+
+      Author author = (Author) obj;
+      return this.getName().equals(author.getName());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode(getName());
     }
 }
