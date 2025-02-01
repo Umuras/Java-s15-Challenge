@@ -85,4 +85,9 @@ public class Author extends Person{
     {
         return Objects.hashCode(getName());
     }
+
+    public String toString()
+    {
+        return "Author Name: " + getName() + " ";
+    }
 }

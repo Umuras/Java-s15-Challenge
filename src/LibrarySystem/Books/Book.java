@@ -15,16 +15,17 @@ public class Book {
     private Double edition;
     private LocalDateTime dateOfPurchase;
     private Reader reader;
-    //private static int bookID = 1;
+    public static Long stbookID = 1L;
 
     public Book(Long bookID, Author author, String name, Double price, Double edition)
     {
-        this.bookID = bookID;
+        this.bookID = stbookID;
         this.author = author;
         this.name = name;
         this.price = price;
         this.edition = edition;
         status = BookStatus.INLIBRARY;
+        stbookID++;
     }
 
     public String getName()

@@ -8,6 +8,7 @@ import Users.Reader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Library {
     private List<Book> libraryBooks;
@@ -30,6 +31,11 @@ public class Library {
     public List<Reader> getLibraryReaders()
     {
         return libraryReaders;
+    }
+
+    public Set<Author> getLibraryBooksAuthors()
+    {
+        return libraryBooksAuthors.stream().collect(Collectors.toUnmodifiableSet());
     }
 
     public void addNewBookInLibraryBooks(Book newBook)

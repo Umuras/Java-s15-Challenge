@@ -20,40 +20,40 @@ public class Main {
         libraryReaders.add(new Reader("Ali Umur Kucur"));
 
         Author omerSeyfettinAuthor = library.checkAuthor("Ömer Seyfettin");
-        Book book1 = new Book(1L,omerSeyfettinAuthor,"Forsa", 50.0,1.0);
+        Book book1 = new Book(Book.stbookID,omerSeyfettinAuthor,"Forsa", 50.0,1.0);
         omerSeyfettinAuthor.addNewBook(book1);
         library.addNewBookInLibraryBooks(book1);
         library.addLibraryBooksAuthor(omerSeyfettinAuthor);
 
         Author muratSertogluAuthor = library.checkAuthor("Murat Sertoğlu");
-        Book book2 = new Book(2L, muratSertogluAuthor, "Battal Gazi", 150.0,1.0);
+        Book book2 = new Book(Book.stbookID, muratSertogluAuthor, "Battal Gazi", 150.0,1.0);
         muratSertogluAuthor.addNewBook(book2);
         library.addNewBookInLibraryBooks(book2);
         library.addLibraryBooksAuthor(muratSertogluAuthor);
 
         Author fyodorDostoevskyAuthor = library.checkAuthor("Fyodor Dostoevsky");
-        Book book3 = new Book(3L,fyodorDostoevskyAuthor,"Suç ve Ceza",200.0,4.0);
+        Book book3 = new Book(Book.stbookID,fyodorDostoevskyAuthor,"Suç ve Ceza",200.0,4.0);
         fyodorDostoevskyAuthor.addNewBook(book3);
         library.addNewBookInLibraryBooks(book3);
         library.addLibraryBooksAuthor(fyodorDostoevskyAuthor);
 
         Author ferencMolnarAuthor = library.checkAuthor("Ferenc Molnar");
-        Book book4 = new Book(4L,ferencMolnarAuthor,"Pal Sokağı Çocukları", 95.0,2.0);
+        Book book4 = new Book(Book.stbookID,ferencMolnarAuthor,"Pal Sokağı Çocukları", 95.0,2.0);
         ferencMolnarAuthor.addNewBook(book4);
         library.addNewBookInLibraryBooks(book4);
         library.addLibraryBooksAuthor(ferencMolnarAuthor);
 
-        Book book5 = new Book(5L,omerSeyfettinAuthor, "Pembe İncili Kaftan", 35.0,1.0);
+        Book book5 = new Book(Book.stbookID,omerSeyfettinAuthor, "Pembe İncili Kaftan", 35.0,1.0);
         omerSeyfettinAuthor.addNewBook(book5);
         library.addNewBookInLibraryBooks(book5);
 
         Author nihalAtsizAuthor = library.checkAuthor("Nihal Atsız");
-        Book book6 = new Book(6L,nihalAtsizAuthor, "Bozkurtlar",325.0,5.0);
+        Book book6 = new Book(Book.stbookID,nihalAtsizAuthor, "Bozkurtlar",325.0,5.0);
         nihalAtsizAuthor.addNewBook(book6);
         library.addNewBookInLibraryBooks(book6);
         library.addLibraryBooksAuthor(nihalAtsizAuthor);
 
-        Book book7 = new Book(7L,nihalAtsizAuthor,"Deli Kurt",180.0,3.0);
+        Book book7 = new Book(Book.stbookID,nihalAtsizAuthor,"Deli Kurt",180.0,3.0);
         nihalAtsizAuthor.addNewBook(book7);
         library.addNewBookInLibraryBooks(book7);
 
@@ -63,9 +63,8 @@ public class Main {
             System.out.println("Kütüphaneye yeni kitap eklemek için 1'e basınız: ");
             System.out.println("Kütüphaneden kitap seçmek için 2'ye basınız: ");
             System.out.println("Kütüphanedeki tüm kitapları listelemek için 3'e basınız: ");
-
-            System.out.println("Kütüphanedeki kitapları kategori türüne göre listelemek için 6'ya basınız: ");
-            System.out.println("Kütüphanedeki bir yazara ait tüm kitaplara listelemek için 7'ye basınız: ");
+            System.out.println("Kütüphanedeki kitapları kategori türüne göre listelemek için 4'ya basınız: ");
+            System.out.println("Kütüphanedeki bir yazara ait tüm kitaplara listelemek için 5'ye basınız: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -84,7 +83,7 @@ public class Main {
                     System.out.println("Enter the book's edition: ");
                     edition = scanner.nextDouble();
                     Author newAuthor = library.checkAuthor(authorName);
-                    Book newBook = new Book(library.getLibraryBooks().size() + 1L,newAuthor,name,price,edition);
+                    Book newBook = new Book(Book.stbookID,newAuthor,name,price,edition);
                     library.addNewBookInLibraryBooks(newBook);
                     library.addLibraryBooksAuthor(newAuthor);
                     newAuthor.addNewBook(newBook);
@@ -192,17 +191,31 @@ public class Main {
                         library.getLibraryBooks().get(i).display();
                     }
                     break;
+                case 5:
+                    System.out.println("Direk yazar adı girerek kitapları listelemek için 1'e basınız: ");
+                    System.out.println("Kütüphanedeki kitapların tüm yazarlarını listeleyip yazarı seçip kitapları listelemek için 2'ye basınız: ");
+                    int choiceAuthorOption = scanner.nextInt();
+                    if(choiceAuthorOption == 1 || choiceAuthorOption == 2)
+                    {
+                        if(choiceAuthorOption == 2)
+                        {
+                            System.out.println(library.getLibraryBooksAuthors());
+                            scanner.nextLine();
+                        }
+                        System.out.println("Yazara ait olan kitapları listelemek için yazarın adını giriniz: ");
+                        String booksOfAuthorName = scanner.nextLine();
+                        List<Book> booksOfAuthor = library.searchBookAuthorName(booksOfAuthorName);
+                        if(!booksOfAuthor.isEmpty() && booksOfAuthor != null)
+                        {
+                            booksOfAuthor.forEach(book -> book.display());
+                        }else{
+                            System.out.println("Bu yazara ait kitap bulunmamaktadır.");
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
-
-
-
-
         }
-
     }
-
-
-
 }
