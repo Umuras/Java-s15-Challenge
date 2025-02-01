@@ -17,6 +17,13 @@ public class Author extends Person{
         authorBooks = new ArrayList<>();
     }
 
+
+
+    public List<Book> getAuthorBooks()
+    {
+        return authorBooks;
+    }
+
     public void showBook()
     {
         Iterator itr = authorBooks.iterator();
@@ -49,10 +56,6 @@ public class Author extends Person{
 
     }
 
-    public List<Book> getAuthorBooks()
-    {
-        return authorBooks;
-    }
 
 
     @Override

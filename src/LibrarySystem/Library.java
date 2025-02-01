@@ -50,6 +50,22 @@ public class Library {
         }
     }
 
+    public void removeBookInLibraryBooks(Book book){
+        Iterator<Book> itr = libraryBooks.iterator();
+        while (itr.hasNext())
+        {
+            if(itr.next().equals(book))
+            {
+                String bookName = book.getName();
+                book.getAuthor().getAuthorBooks().remove(book);
+                itr.remove();
+                System.out.println(bookName + " kitabı başarıyla silindi");
+            }
+        }
+    }
+
+
+
     //Lend: Ödünç vermek
     //Borrow: Ödünç almak
     //Öğrenciye kitap vermek için kullanılacak

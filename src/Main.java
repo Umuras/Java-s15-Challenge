@@ -3,6 +3,7 @@ import LibrarySystem.Library;
 import Users.Author;
 import Users.Reader;
 
+import java.security.Key;
 import java.util.*;
 
 public class Main {
@@ -94,7 +95,7 @@ public class Main {
                     System.out.println("İsme göre seçim yapmak için 2'ye basınız: ");
                     System.out.println("Yazara göre seçim yapmak için 3'e basınız: ");
                     int choiceType = scanner.nextInt();
-                    Book selectedBook;
+                    Book selectedBook = null;
                     scanner.nextLine();
                     if(choiceType == 1)
                     {
@@ -111,8 +112,77 @@ public class Main {
                         System.out.println("Kitap seçmek için bir yazar adı giriniz: ");
                         String authorNm = scanner.nextLine();
                         List<Book> booksOfAuthor = library.searchBookAuthorName(authorNm);
+                        if(!booksOfAuthor.isEmpty() && booksOfAuthor != null)
+                        {
+                            System.out.println("Kitabın id numarası üzerinden bir kitap seçiniz: ");
+                            int bookId = scanner.nextInt();
+                            for(Book book : booksOfAuthor)
+                            {
+                                if(book.getBookID() == bookId)
+                                {
+                                    selectedBook = book;
+                                }
+                            }
+                        }
                     }else{
                         System.out.println("Yanlış seçim yaptınız: ");
+                    }
+
+                    if(selectedBook != null)
+                    {
+                        System.out.println("Seçili kitabı sistemden silmek için 1'e basınız: ");
+                        System.out.println("Seçili kitabı güncellemek için 2'ye basınız: ");
+                        System.out.println("Ana menüye dönmek için 3'e basınız: ");
+                        int deleteOrUpdate = scanner.nextInt();
+
+                        if(deleteOrUpdate == 1)
+                        {
+                            library.removeBookInLibraryBooks(selectedBook);
+                        }else if(deleteOrUpdate == 2)
+                        {
+                            int updatingChoice = 0;
+                            while(updatingChoice != 9)
+                            {
+                                System.out.println("Kitabın adını güncellemek için 1'e basınız: ");
+                                System.out.println("Kitabın yazarını güncellemek için 2'ye basınız: ");
+                                System.out.println("Kitabın fiyatını güncellemek için 3'e basınız: ");
+                                System.out.println("Kitabın baskısını güncellemek için 4'e basınız: ");
+                                System.out.println("Ana menüye dönmek için 9'a basınız: ");
+                                updatingChoice = scanner.nextInt();
+                                scanner.nextLine();
+
+                                if(updatingChoice == 1)
+                                {
+                                    System.out.println("Kitabın adını giriniz: ");
+                                    String updateBookName = scanner.nextLine();
+                                    selectedBook.setName(updateBookName);
+                                }else if(updatingChoice == 2)
+                                {
+                                    System.out.println("Kitabın yazarın adını giriniz: ");
+                                    String updateAuthorName = scanner.nextLine();
+                                    selectedBook.getAuthor().getAuthorBooks().remove(selectedBook);
+                                    selectedBook.setAuthor(new Author(updateAuthorName));
+                                    selectedBook.getAuthor().addNewBook(selectedBook);
+                                    library.addLibraryBooksAuthor(selectedBook.getAuthor());
+                                }else if(updatingChoice == 3)
+                                {
+                                    System.out.println("Kitabın fiyatını giriniz: ");
+                                    Double updateBookPrice = scanner.nextDouble();
+                                    selectedBook.setPrice(updateBookPrice);
+                                }else if(updatingChoice == 4)
+                                {
+                                    System.out.println("Kitabın baskısını giriniz: ");
+                                    Double updateBookEdition = scanner.nextDouble();
+                                    selectedBook.setEdition(updateBookEdition);
+                                }
+                            }
+                        } else if (deleteOrUpdate == 3) {
+                            continue;
+                        } else{
+                            System.out.println("Yanlış seçim yaptınız");
+                        }
+                    }else{
+                        System.out.println("Doğru seçim yapmadınız!!!");
                     }
 
 
