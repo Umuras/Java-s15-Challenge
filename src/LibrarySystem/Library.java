@@ -1,10 +1,12 @@
 package LibrarySystem;
 
 import LibrarySystem.Books.Book;
+import LibrarySystem.Enums.BookType;
 import Users.Author;
 import Users.Librarian;
 import Users.Reader;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -147,6 +149,19 @@ public class Library {
         }
         System.out.println("Kütüphanede bu yazara ait kitap yok.");
         return null;
+    }
+
+    public List<Book> searchBookCategoryType(BookType bookType)
+    {
+        List<Book> selectedCategoryBooks = new ArrayList<>();
+        for(Book libraryBook : libraryBooks)
+        {
+            if(libraryBook.getBookType().equals(bookType))
+            {
+                selectedCategoryBooks.add(libraryBook);
+            }
+        }
+        return selectedCategoryBooks;
     }
 
     public Author checkAuthor(String authorName)

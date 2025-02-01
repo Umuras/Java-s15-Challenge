@@ -1,4 +1,5 @@
-import LibrarySystem.Books.Book;
+import LibrarySystem.Books.*;
+import LibrarySystem.Enums.BookType;
 import LibrarySystem.Library;
 import Users.Author;
 import Users.Reader;
@@ -20,40 +21,40 @@ public class Main {
         libraryReaders.add(new Reader("Ali Umur Kucur"));
 
         Author omerSeyfettinAuthor = library.checkAuthor("Ömer Seyfettin");
-        Book book1 = new Book(Book.stbookID,omerSeyfettinAuthor,"Forsa", 50.0,1.0);
+        Book book1 = new StoryBooks(Book.stbookID,omerSeyfettinAuthor,"Forsa", 50.0,1.0);
         omerSeyfettinAuthor.addNewBook(book1);
         library.addNewBookInLibraryBooks(book1);
         library.addLibraryBooksAuthor(omerSeyfettinAuthor);
 
         Author muratSertogluAuthor = library.checkAuthor("Murat Sertoğlu");
-        Book book2 = new Book(Book.stbookID, muratSertogluAuthor, "Battal Gazi", 150.0,1.0);
+        Book book2 = new StoryBooks(Book.stbookID, muratSertogluAuthor, "Battal Gazi", 150.0,1.0);
         muratSertogluAuthor.addNewBook(book2);
         library.addNewBookInLibraryBooks(book2);
         library.addLibraryBooksAuthor(muratSertogluAuthor);
 
         Author fyodorDostoevskyAuthor = library.checkAuthor("Fyodor Dostoevsky");
-        Book book3 = new Book(Book.stbookID,fyodorDostoevskyAuthor,"Suç ve Ceza",200.0,4.0);
+        Book book3 = new StoryBooks(Book.stbookID,fyodorDostoevskyAuthor,"Suç ve Ceza",200.0,4.0);
         fyodorDostoevskyAuthor.addNewBook(book3);
         library.addNewBookInLibraryBooks(book3);
         library.addLibraryBooksAuthor(fyodorDostoevskyAuthor);
 
         Author ferencMolnarAuthor = library.checkAuthor("Ferenc Molnar");
-        Book book4 = new Book(Book.stbookID,ferencMolnarAuthor,"Pal Sokağı Çocukları", 95.0,2.0);
+        Book book4 = new StoryBooks(Book.stbookID,ferencMolnarAuthor,"Pal Sokağı Çocukları", 95.0,2.0);
         ferencMolnarAuthor.addNewBook(book4);
         library.addNewBookInLibraryBooks(book4);
         library.addLibraryBooksAuthor(ferencMolnarAuthor);
 
-        Book book5 = new Book(Book.stbookID,omerSeyfettinAuthor, "Pembe İncili Kaftan", 35.0,1.0);
+        Book book5 = new StoryBooks(Book.stbookID,omerSeyfettinAuthor, "Pembe İncili Kaftan", 35.0,1.0);
         omerSeyfettinAuthor.addNewBook(book5);
         library.addNewBookInLibraryBooks(book5);
 
         Author nihalAtsizAuthor = library.checkAuthor("Nihal Atsız");
-        Book book6 = new Book(Book.stbookID,nihalAtsizAuthor, "Bozkurtlar",325.0,5.0);
+        Book book6 = new StoryBooks(Book.stbookID,nihalAtsizAuthor, "Bozkurtlar",325.0,5.0);
         nihalAtsizAuthor.addNewBook(book6);
         library.addNewBookInLibraryBooks(book6);
         library.addLibraryBooksAuthor(nihalAtsizAuthor);
 
-        Book book7 = new Book(Book.stbookID,nihalAtsizAuthor,"Deli Kurt",180.0,3.0);
+        Book book7 = new StoryBooks(Book.stbookID,nihalAtsizAuthor,"Deli Kurt",180.0,3.0);
         nihalAtsizAuthor.addNewBook(book7);
         library.addNewBookInLibraryBooks(book7);
 
@@ -83,7 +84,22 @@ public class Main {
                     System.out.println("Enter the book's edition: ");
                     edition = scanner.nextDouble();
                     Author newAuthor = library.checkAuthor(authorName);
-                    Book newBook = new Book(Book.stbookID,newAuthor,name,price,edition);
+                    System.out.println("Kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
+                    int category = scanner.nextInt();
+                    Book newBook;
+                    if(category == 1)
+                    {
+                        newBook = new Journals(Book.stbookID,newAuthor,name,price,edition);
+                    } else if (category == 2) {
+                        newBook = new Magazines(Book.stbookID,newAuthor,name,price,edition);
+                    } else if (category == 3) {
+                        newBook = new StoryBooks(Book.stbookID,newAuthor,name,price,edition);
+                    } else if (category == 4) {
+                        newBook = new StudyBooks(Book.stbookID,newAuthor,name,price,edition);
+                    }else{
+                        System.out.println("Yanlış kategori seçimi yaptınız!!");
+                        continue;
+                    }
                     library.addNewBookInLibraryBooks(newBook);
                     library.addLibraryBooksAuthor(newAuthor);
                     newAuthor.addNewBook(newBook);
@@ -124,7 +140,7 @@ public class Main {
                             }
                         }
                     }else{
-                        System.out.println("Yanlış seçim yaptınız: ");
+                        System.out.println("Yanlış seçim yaptınız!!");
                     }
 
                     if(selectedBook != null)
@@ -189,6 +205,34 @@ public class Main {
                 case 3:
                     for (int i = 0; i < library.getLibraryBooks().size(); i++) {
                         library.getLibraryBooks().get(i).display();
+                    }
+                    break;
+                case 4:
+                    System.out.println("Kitapları listelemek için kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
+                    int choiceCategory = scanner.nextInt();
+                    List<Book> selectedCategoryBooks;
+                    if(choiceCategory == 1)
+                    {
+                        selectedCategoryBooks = library.searchBookCategoryType(BookType.JOURNALS);
+
+                    }else if(choiceCategory == 2)
+                    {
+                        selectedCategoryBooks = library.searchBookCategoryType(BookType.MAGAZINES);
+                    }else if(choiceCategory == 3)
+                    {
+                        selectedCategoryBooks = library.searchBookCategoryType(BookType.STORY);
+                    }else if(choiceCategory == 4)
+                    {
+                        selectedCategoryBooks = library.searchBookCategoryType(BookType.STUDY);
+                    }else{
+                        System.out.println("Yanlış kategori seçtiniz!!");
+                        continue;
+                    }
+                    if(!selectedCategoryBooks.isEmpty() && selectedCategoryBooks != null)
+                    {
+                        selectedCategoryBooks.forEach(book -> book.display());
+                    }else{
+                        System.out.println("Kütüphanede bu kategoride kitap bulunamamaktadır!!!");
                     }
                     break;
                 case 5:

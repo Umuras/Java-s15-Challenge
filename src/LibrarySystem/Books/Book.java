@@ -1,12 +1,13 @@
 package LibrarySystem.Books;
 
 import LibrarySystem.Enums.BookStatus;
+import LibrarySystem.Enums.BookType;
 import Users.Author;
 import Users.Reader;
 
 import java.time.LocalDateTime;
 
-public class Book {
+public abstract class Book {
     private Long bookID;
     private String name;
     private Double price;
@@ -15,6 +16,7 @@ public class Book {
     private Double edition;
     private LocalDateTime dateOfPurchase;
     private Reader reader;
+    private BookType bookType;
     public static Long stbookID = 1L;
 
     public Book(Long bookID, Author author, String name, Double price, Double edition)
@@ -76,6 +78,16 @@ public class Book {
     public LocalDateTime getDateOfPurchase()
     {
         return dateOfPurchase;
+    }
+
+    public BookType getBookType()
+    {
+        return bookType;
+    }
+
+    public void setBookType(BookType bookType)
+    {
+        this.bookType = bookType;
     }
 
     public Reader getOwner()
