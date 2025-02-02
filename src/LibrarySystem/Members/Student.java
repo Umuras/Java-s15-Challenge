@@ -30,14 +30,15 @@ public class Student extends MemberRecord{
     }
 
     @Override
-    public double payBill(Book book) {
-        return book.getPrice();
+    public void payBill(Book book) {
+        addMemberBalance(-book.getPrice());
     }
 
     @Override
     public String toString()
     {
-        return "Member Name: " + getName() + "\n" + "Member type: " + getType() + "\n" + "Member address: " + getAddress() + "\n"
-                + "Member phone: " + getPhoneNo() + "\n" + "Member Verify Status: " +getVerifiedMemberStatus();
+        return "Üye Adı: " + getName() + "\n" + "Üye Türü: " + getType() + "\n" + "Üye Adresi: " + getAddress() + "\n"
+                + "Üye Telefonu: " + getPhoneNo() + "\n" + "Üye Onay Durumu: " +getVerifiedMemberStatus() + "\n" +
+                "Üye Bakiyesi: " + getMemberBalance();
     }
 }

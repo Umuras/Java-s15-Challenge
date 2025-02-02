@@ -5,10 +5,7 @@ import LibrarySystem.Enums.MemberType;
 import Users.Reader;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public abstract class MemberRecord extends Reader {
     private Long memberID;
@@ -22,18 +19,20 @@ public abstract class MemberRecord extends Reader {
     private boolean verifiedMemberStatus;
     private int issueBookValue = 0;
     private double memberBalance = 1000.0;
-    private List<StringBuilder> billList;
+    private Map<Long,StringBuilder> billList;
+    public static Long stmemberID = 1L;
 
     public MemberRecord(Long memberID, MemberType type, String name, String address, String phoneNo)
     {
         super(name);
-        this.memberID = memberID;
+        this.memberID = stmemberID;
         this.type = type;
         this.name = name;
         this.address = address;
         this.phoneNo = phoneNo;
         noBooksIssued = false;
-        billList = new ArrayList<>();
+        billList = new HashMap<>();
+        stmemberID++;
     }
 
     public Long getMemberID()
@@ -106,14 +105,29 @@ public abstract class MemberRecord extends Reader {
         this.issueBookValue += issueBookValue;
     }
 
-    public List<StringBuilder> getBillList()
+    public Map<Long,StringBuilder> getBillList()
     {
-        return billList.stream().collect(Collectors.toUnmodifiableList());
+        return billList;
     }
 
-    public void addBillInBillList(StringBuilder billBuilder)
+    public void addBillInBillList(StringBuilder billBuilder, Long bookID)
     {
-        billList.add(billBuilder);
+        billList.put(bookID,billBuilder);
+    }
+
+    public void removeBillInBillList(Long bookID)
+    {
+        billList.remove(bookID);
+    }
+
+    public double getMemberBalance()
+    {
+        return memberBalance;
+    }
+
+    public void addMemberBalance(double memberBalance)
+    {
+        this.memberBalance += memberBalance;
     }
 
     public abstract MemberRecord getMember();
@@ -122,7 +136,7 @@ public abstract class MemberRecord extends Reader {
 
     public abstract void decrementBookIssued();
 
-    public abstract double payBill(Book book);
+    public abstract void payBill(Book book);
 
     @Override
     public boolean equals(Object obj)

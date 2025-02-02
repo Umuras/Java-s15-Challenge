@@ -15,16 +15,21 @@ public class Faculty extends MemberRecord{
 
     @Override
     public void incrementBookIssued() {
-
+        setIssueBookValue(1);
+        setNoBooksIssued(true);
     }
 
     @Override
     public void decrementBookIssued() {
-
+        setIssueBookValue(-1);
+        if(getIssueBookValue() == 0)
+        {
+            setNoBooksIssued(false);
+        }
     }
 
     @Override
-    public double payBill(Book book) {
-        return book.getPrice();
+    public void payBill(Book book) {
+        addMemberBalance(-book.getPrice());
     }
 }

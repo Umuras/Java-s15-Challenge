@@ -2,6 +2,7 @@ import LibrarySystem.Books.*;
 import LibrarySystem.Enums.BookType;
 import LibrarySystem.Enums.MemberType;
 import LibrarySystem.Library;
+import LibrarySystem.Members.Faculty;
 import LibrarySystem.Members.MemberRecord;
 import LibrarySystem.Members.Student;
 import Users.Author;
@@ -22,7 +23,7 @@ public class Main {
         List<Reader> libraryReaders = new ArrayList<>();
         Library library = new Library(libraryBooks, libraryReaders,libraryBooksAuthor);
         Librarian librarian = new Librarian("Ahmet","12356",library);
-        libraryReaders.add(new Student(1L, MemberType.STUDENT,"Ali Umur Kucur","Istanbul","05414618621"));
+        libraryReaders.add(new Student(MemberRecord.stmemberID, MemberType.STUDENT,"Ali Umur Kucur","Istanbul","11112223344"));
         libraryReaders.forEach(reader -> librarian.verifyMember(reader));
 
         Author omerSeyfettinAuthor = library.checkAuthor("Ömer Seyfettin");
@@ -59,7 +60,7 @@ public class Main {
         library.addNewBookInLibraryBooks(book6);
         library.addLibraryBooksAuthor(nihalAtsizAuthor);
 
-        Book book7 = new StoryBooks(Book.stbookID,nihalAtsizAuthor,"Deli Kurt",180.0,3.0);
+        Book book7 = new StoryBooks(Book.stbookID,nihalAtsizAuthor,"Deli Kurt",200.0,3.0);
         nihalAtsizAuthor.addNewBook(book7);
         library.addNewBookInLibraryBooks(book7);
 
@@ -206,8 +207,6 @@ public class Main {
                     }else{
                         System.out.println("Doğru seçim yapmadınız!!!");
                     }
-
-
                     break;
                 case 3:
                     for (int i = 0; i < library.getLibraryBooks().size(); i++) {
@@ -289,13 +288,17 @@ public class Main {
                             {
                                 if(member.getIssueBookValue() < 5)
                                 {
-                                    member.borrowBook(selectedBook,librarian);
-                                    member.incrementBookIssued();
-                                    System.out.println(member.getIssueBookValue());
+                                    if(member.getMemberBalance() >= selectedBook.getPrice())
+                                    {
+                                        member.borrowBook(selectedBook,librarian);
+                                        member.incrementBookIssued();
+                                        System.out.println(member.getIssueBookValue());
+                                    }else{
+                                        System.out.println("Yeterli bakiyen olmadığı için artık kitap kiralayamazsın!!!");
+                                    }
                                 }else{
                                     System.out.println("Kütüphaneden en fazla 5 kitap alabilirsiniz!!!");
                                 }
-
                             }
                         } else if (choiceBuyingOption == 2) {
                             member.getReaderBooks().forEach(book -> book.display());
@@ -313,10 +316,12 @@ public class Main {
                                     if(returningBook != null)
                                     {
                                         member.returnBook(librarian,returningBook);
+                                        System.out.println("Kitap iadesi başarılı!!!");
                                     }
                                 }else if(choiceNumber == 2)
                                 {
-                                    member.getBillList().forEach(bill -> System.out.println(bill));
+                                    System.out.println("Fatura Listesi: \n");
+                                    System.out.println(member.getBillList());
                                 } else if (choiceNumber == 9) {
                                     continue;
                                 }
@@ -330,7 +335,44 @@ public class Main {
                         System.out.println("Bu isimde üye bulunamamıştır. Lütfen kütüphaneye üye olunuz.");
                         System.out.println("Kütüphaneye üye olmak için 1'e basınız: ");
                         System.out.println("Ana menüye dönmek için 9'a basınız: ");
-                        scanner.nextLine();
+                        int choiceNewOperation = scanner.nextInt();
+                        if(choiceNewOperation == 1)
+                        {
+                            String memberName, memberAdress, memberPhone;
+                            MemberType memberType = null;
+                            System.out.println("Üyenin tipini seçiniz: 1-Öğrenci, 2-Fakülte");
+                            int choiceMemberType = scanner.nextInt();
+                            if(choiceMemberType == 1)
+                            {
+                                memberType = MemberType.STUDENT;
+                            } else if (choiceMemberType == 2) {
+                                memberType = MemberType.FACULTY;
+                            }else{
+                                System.out.println("Yanlış tuşa bastınız.");
+                            }
+                            scanner.nextLine();
+                            System.out.println("Üyenin ismini giriniz: ");
+                            memberName = scanner.nextLine();
+                            System.out.println("Üyenin adresini giriniz: ");
+                            memberAdress = scanner.nextLine();
+                            System.out.println("Üyenin telefonunu giriniz: ");
+                            memberPhone = scanner.nextLine();
+                            if(memberType != null && memberType == MemberType.STUDENT)
+                            {
+                                MemberRecord newStudent = new Student(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
+                                libraryReaders.add(newStudent);
+                                librarian.verifyMember(newStudent);
+                                System.out.println("Kayıt başarıyla tamamlandı!!!");
+                            }else if(memberType != null && memberType == MemberType.FACULTY)
+                            {
+                                MemberRecord newFaculty = new Faculty(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
+                                libraryReaders.add(newFaculty);
+                                librarian.verifyMember(newFaculty);
+                                System.out.println("Kayıt başarıyla tamamlandı!!!");
+                            }
+                        } else if (choiceNewOperation == 9) {
+                            continue;
+                        }
                     }
                     break;
                 case 7:

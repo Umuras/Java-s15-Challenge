@@ -2,6 +2,7 @@ package LibrarySystem;
 
 import LibrarySystem.Books.Book;
 import LibrarySystem.Enums.BookType;
+import LibrarySystem.Members.MemberRecord;
 import Users.Author;
 import Users.Librarian;
 import Users.Reader;
@@ -95,6 +96,7 @@ public class Library {
         if(!libraryBooks.contains(takeBackBook))
         {
             libraryBooks.add(takeBackBook);
+            ((MemberRecord)reader).getBillList();
             reader.removeBookToBookList(takeBackBook);
         }
     }
@@ -180,7 +182,7 @@ public class Library {
         return libraryBalance;
     }
 
-    public void setLibraryBalance(double libraryBalance) {
+    public void addLibraryBalance(double libraryBalance) {
         this.libraryBalance += libraryBalance;
     }
 

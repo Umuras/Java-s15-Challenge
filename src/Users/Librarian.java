@@ -14,7 +14,6 @@ public class Librarian {
     private String password;
     private Library library;
     private Set<MemberRecord> memberRecords;
-    private Map<MemberRecord, List<StringBuilder>> memberBillList;
 
     public Librarian(String name, String password, Library library)
     {
@@ -22,7 +21,6 @@ public class Librarian {
         this.password = password;
         this.library = library;
         memberRecords = new HashSet<>();
-        memberBillList = new HashMap<>();
     }
 
     public String getName()
@@ -67,6 +65,8 @@ public class Librarian {
             library.lendBook(book,reader,this);
             book.updateStatus(BookStatus.BORROWLIBRARYBOOK);
             createBill(book, reader);
+            ((MemberRecord)reader).payBill(book);
+            library.addLibraryBalance(book.getPrice());
         }else{
             System.out.println("Library hasn't this book");
         }
@@ -96,16 +96,17 @@ public class Librarian {
         billBuilder.append("Price: ").append(book.getPrice()).append("\n");
         billBuilder.append("DateOfPurchase: ").append(book.getDateOfPurchase());
 
-
-        ((MemberRecord)reader).addBillInBillList(billBuilder);
-        memberBillList.put((MemberRecord) reader,((MemberRecord)reader).getBillList());
+        ((MemberRecord)reader).addBillInBillList(billBuilder,book.getBookID());
         System.out.println(billBuilder.toString());
     }
 
     public void returnBook(Book book, Reader reader)
     {
         double fineValue = calculateFine(book);
-        library.setLibraryBalance(fineValue > 0 ? fineValue : book.getPrice());
+        ((MemberRecord)reader).addMemberBalance(fineValue > 0 ? (-fineValue+book.getPrice()) : book.getPrice());
+        library.addLibraryBalance(fineValue > 0 ? (fineValue-book.getPrice()) : -book.getPrice());
+        ((MemberRecord)reader).removeBillInBillList(book.getBookID());
+        book.updateStatus(BookStatus.INLIBRARY);
         library.takeBackBook(book, reader);
     }
 }
