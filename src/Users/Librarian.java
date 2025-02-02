@@ -7,19 +7,32 @@ import LibrarySystem.Members.MemberRecord;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Set;
+import java.util.*;
 
 public class Librarian {
     private String name;
     private String password;
     private Library library;
     private Set<MemberRecord> memberRecords;
+    private Map<MemberRecord, List<StringBuilder>> memberBillList;
 
     public Librarian(String name, String password, Library library)
     {
         this.name = name;
         this.password = password;
         this.library = library;
+        memberRecords = new HashSet<>();
+        memberBillList = new HashMap<>();
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getPassword()
+    {
+        return password;
     }
 
     public boolean searchBook(Book book)
@@ -27,10 +40,23 @@ public class Librarian {
         return library.getLibraryBooks().contains(book);
     }
 
-    //Kütüphane üyesini listeye ekliyorum.
-    public void verifyMember(MemberRecord member)
+    public MemberRecord searchAndGetMember(String memberName)
     {
-        memberRecords.add(member);
+        for(MemberRecord memberRecord : memberRecords)
+        {
+            if(memberRecord.getName().equals(memberName))
+            {
+                return memberRecord;
+            }
+        }
+        return null;
+    }
+
+    //Kütüphane üyesini listeye ekliyorum.
+    public void verifyMember(Reader member)
+    {
+        ((MemberRecord)member).setVerifiedMemberStatus(true);
+        memberRecords.add((MemberRecord) member);
     }
 
     //Kitap vermek, kitap çıkarmak demek.
@@ -40,7 +66,7 @@ public class Librarian {
         {
             library.lendBook(book,reader,this);
             book.updateStatus(BookStatus.BORROWLIBRARYBOOK);
-            createBill(book);
+            createBill(book, reader);
         }else{
             System.out.println("Library hasn't this book");
         }
@@ -59,17 +85,21 @@ public class Librarian {
     }
 
     //Kitap ödünç alınınca veya satın alınınca oluşturulacak fatura.
-    public void createBill(Book book)
+    public void createBill(Book book, Reader reader)
     {
-        StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("BookID: ").append(book.getBookID()).append("\n");
-        strBuilder.append("BookName: ").append(book.getName()).append("\n");
-        strBuilder.append("Book's Author: ").append(book.getAuthor()).append("\n");
-        strBuilder.append("Price: ").append(book.getPrice()).append("\n");
-        strBuilder.append("DateOfPurchase: ").append(book.getDateOfPurchase());
+        StringBuilder billBuilder = new StringBuilder();
+        billBuilder.append("Book's Bill").append("\n");
+        billBuilder.append("Bill's Owner: ").append(reader.getName()).append("\n");
+        billBuilder.append("BookID: ").append(book.getBookID()).append("\n");
+        billBuilder.append("BookName: ").append(book.getName()).append("\n");
+        billBuilder.append("Book's Author: ").append(book.getAuthor().getName()).append("\n");
+        billBuilder.append("Price: ").append(book.getPrice()).append("\n");
+        billBuilder.append("DateOfPurchase: ").append(book.getDateOfPurchase());
 
-        System.out.println("Book's Bill");
-        System.out.println(strBuilder.toString());
+
+        ((MemberRecord)reader).addBillInBillList(billBuilder);
+        memberBillList.put((MemberRecord) reader,((MemberRecord)reader).getBillList());
+        System.out.println(billBuilder.toString());
     }
 
     public void returnBook(Book book, Reader reader)

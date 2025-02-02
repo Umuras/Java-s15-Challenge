@@ -17,8 +17,6 @@ public class Author extends Person{
         authorBooks = new ArrayList<>();
     }
 
-
-
     public List<Book> getAuthorBooks()
     {
         return authorBooks;

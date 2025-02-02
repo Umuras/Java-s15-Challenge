@@ -16,7 +16,7 @@ public class Library {
     private List<Book> libraryBooks;
     private List<Reader> libraryReaders;
     private Set<Author> libraryBooksAuthors;
-    private double libraryBalance = 0;
+    private double libraryBalance = 10000;
 
     public Library(List<Book> libraryBooks, List<Reader> libraryReaders, Set<Author> libraryBooksAuthors)
     {

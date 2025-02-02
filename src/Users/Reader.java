@@ -16,6 +16,11 @@ public class Reader extends Person{
         readerBooks = new ArrayList<>();
     }
 
+    public List<Book> getReaderBooks()
+    {
+        return readerBooks;
+    }
+
     public void purchaseBook(Librarian librarian, Book book)
     {
         if(librarian.searchBook(book))
@@ -33,7 +38,6 @@ public class Reader extends Person{
         if(librarian.searchBook(book))
         {
             librarian.issueBook(this,book);
-            readerBooks.add(book);
         }else{
             System.out.println("Library hasn't this book");
         }
@@ -49,12 +53,23 @@ public class Reader extends Person{
         readerBooks.remove(removingBook);
     }
 
+    public Book searchUserBookId(int bookId)
+    {
+        for (int i = 0; i < readerBooks.size(); i++) {
+            if(readerBooks.get(i).getBookID() == bookId)
+            {
+                readerBooks.get(i).display();
+                return readerBooks.get(i);
+            }
+        }
+        System.out.println("Kullanıcının bu idde bir kitabı yoktur.");
+        return null;
+    }
+
     public void returnBook(Librarian librarian, Book book)
     {
         librarian.returnBook(book, this);
     }
-
-
 
     public void showBook()
     {
@@ -62,6 +77,10 @@ public class Reader extends Person{
         while (itr.hasNext())
         {
             System.out.println(getName() +" Reader's book: " + itr.next());
+        }
+        if(readerBooks.isEmpty())
+        {
+            System.out.println(getName() + " adlı kullanıcının kiraladığı veya satın aldığı kitap yoktur.");
         }
     }
 

@@ -1,5 +1,6 @@
 package LibrarySystem.Members;
 
+import LibrarySystem.Books.Book;
 import LibrarySystem.Enums.MemberType;
 
 public class Faculty extends MemberRecord{
@@ -8,7 +9,7 @@ public class Faculty extends MemberRecord{
     }
 
     @Override
-    public Object getMember() {
+    public MemberRecord getMember() {
         return this;
     }
 
@@ -23,7 +24,7 @@ public class Faculty extends MemberRecord{
     }
 
     @Override
-    public void payBill() {
-
+    public double payBill(Book book) {
+        return book.getPrice();
     }
 }
