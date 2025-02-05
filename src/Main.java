@@ -214,24 +214,29 @@ public class Main {
                         System.out.println("Kitabın adını giriniz: ");
                         String updateBookName = scanner.nextLine();
                         selectedBook.setName(updateBookName);
+                        System.out.println("Kitabın adı başarıyla güncellendi.");
                     }else if(updatingChoice == 2)
                     {
                         System.out.println("Kitabın yazarın adını giriniz: ");
                         String updateAuthorName = scanner.nextLine();
                         selectedBook.getAuthor().getAuthorBooks().remove(selectedBook);
-                        selectedBook.setAuthor(new Author(updateAuthorName));
+                        Author author = library.checkAuthor(updateAuthorName);
+                        selectedBook.setAuthor(author);
                         selectedBook.getAuthor().addNewBook(selectedBook);
                         library.addLibraryBooksAuthor(selectedBook.getAuthor());
+                        System.out.println("Yazar başarıyla güncellendi");
                     }else if(updatingChoice == 3)
                     {
                         System.out.println("Kitabın fiyatını giriniz: ");
                         Double updateBookPrice = scanner.nextDouble();
                         selectedBook.setPrice(updateBookPrice);
+                        System.out.println("Kitabın fiyatı başarıyla güncellendi.");
                     }else if(updatingChoice == 4)
                     {
                         System.out.println("Kitabın baskısını giriniz: ");
                         Double updateBookEdition = scanner.nextDouble();
                         selectedBook.setEdition(updateBookEdition);
+                        System.out.println("Kitabın baskısı başarıyla güncellendi.");
                     }
                 }
             } else if (deleteOrUpdate == 3) {
