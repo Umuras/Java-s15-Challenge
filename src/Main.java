@@ -9,13 +9,12 @@ import Users.Author;
 import Users.Librarian;
 import Users.Reader;
 
-import java.security.Key;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("Welcome to KUCUR Library");
+        System.out.println("KUCUR Kütüphanesine Hoş Geldiniz!\n");
         Scanner scanner = new Scanner(System.in);
 
         List<Book> libraryBooks = new ArrayList<>();
@@ -67,330 +66,370 @@ public class Main {
 
         while (true)
         {
-            System.out.println("Kütüphaneye yeni kitap eklemek için 1'e basınız: ");
-            System.out.println("Kütüphaneden kitap seçmek için 2'ye basınız: ");
-            System.out.println("Kütüphanedeki tüm kitapları listelemek için 3'e basınız: ");
-            System.out.println("Kütüphanedeki kitapları kategori türüne göre listelemek için 4'ya basınız: ");
-            System.out.println("Kütüphanedeki bir yazara ait tüm kitaplara listelemek için 5'ye basınız: ");
-            System.out.println("Kütüphanedeki bir kitabı kiralamak ya da satın almak için 6'ya basınız: ");
-            System.out.println("Kütüphanenin kasasındaki parayı görmek için 7'ye basınız: ");
+            try {
+                System.out.println("Kütüphaneye yeni kitap eklemek için 1'e basınız: ");
+                System.out.println("Kütüphaneden kitap seçmek için 2'ye basınız: ");
+                System.out.println("Kütüphanedeki tüm kitapları listelemek için 3'e basınız: ");
+                System.out.println("Kütüphanedeki kitapları kategori türüne göre listelemek için 4'ya basınız: ");
+                System.out.println("Kütüphanedeki bir yazara ait tüm kitaplara listelemek için 5'ye basınız: ");
+                System.out.println("Kütüphanedeki bir kitabı kiralamak ya da satın almak için 6'ya basınız: ");
+                System.out.println("Kütüphanenin kasasındaki parayı görmek için 7'ye basınız: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-            switch (choice)
-            {
-                case 1:
-                    String authorName, name;
-                    double price, edition;
-                    System.out.println("Kitap yazarının ismini giriniz: : ");
-                    authorName = scanner.nextLine();
-                    System.out.println("Kitabın ismini giriniz: ");
-                    name = scanner.nextLine();
-                    System.out.println("Kitabın fiyatını giriniz: ");
-                    price = scanner.nextDouble();
-                    System.out.println("Kitabın baskı sürümünü giriniz: ");
-                    edition = scanner.nextDouble();
-                    Author newAuthor = library.checkAuthor(authorName);
-                    System.out.println("Kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
-                    int category = scanner.nextInt();
-                    Book newBook;
-                    if(category == 1)
-                    {
-                        newBook = new Journals(Book.stbookID,newAuthor,name,price,edition);
-                    } else if (category == 2) {
-                        newBook = new Magazines(Book.stbookID,newAuthor,name,price,edition);
-                    } else if (category == 3) {
-                        newBook = new StoryBooks(Book.stbookID,newAuthor,name,price,edition);
-                    } else if (category == 4) {
-                        newBook = new StudyBooks(Book.stbookID,newAuthor,name,price,edition);
-                    }else{
-                        System.out.println("Yanlış kategori seçimi yaptınız!!");
-                        continue;
-                    }
-                    library.addNewBookInLibraryBooks(newBook);
-                    library.addLibraryBooksAuthor(newAuthor);
-                    newAuthor.addNewBook(newBook);
-                    System.out.println("Librarye yeni kitap ekledin.");
-                    break;
-                case 2:
-                    System.out.println("Id'ye göre seçim yapmak için 1'e basınız: ");
-                    System.out.println("İsme göre seçim yapmak için 2'ye basınız: ");
-                    System.out.println("Yazara göre seçim yapmak için 3'e basınız: ");
-                    int choiceType = scanner.nextInt();
-                    Book selectedBook = null;
-                    scanner.nextLine();
-                    if(choiceType == 1)
-                    {
-                        System.out.println("Kitap seçmek için bir id giriniz: ");
-                        int bookId = scanner.nextInt();
-                        selectedBook = library.searchBookId(bookId);
-                    }else if(choiceType == 2)
-                    {
-                        System.out.println("Kitap seçmek için bir isim giriniz: ");
-                        String bookName = scanner.nextLine();
-                        selectedBook = library.searchBookName(bookName);
-                    }else if(choiceType == 3)
-                    {
-                        System.out.println("Kitap seçmek için bir yazar adı giriniz: ");
-                        String authorNm = scanner.nextLine();
-                        List<Book> booksOfAuthor = library.searchBookAuthorName(authorNm);
-                        if(!booksOfAuthor.isEmpty() && booksOfAuthor != null)
-                        {
-                            System.out.println("Kitabın id numarası üzerinden bir kitap seçiniz: ");
-                            int bookId = scanner.nextInt();
-                            for(Book book : booksOfAuthor)
-                            {
-                                if(book.getBookID() == bookId)
-                                {
-                                    selectedBook = book;
-                                }
-                            }
-                        }
-                    }else{
-                        System.out.println("Yanlış seçim yaptınız!!");
-                    }
-
-                    if(selectedBook != null)
-                    {
-                        System.out.println("Seçili kitabı sistemden silmek için 1'e basınız: ");
-                        System.out.println("Seçili kitabı güncellemek için 2'ye basınız: ");
-                        System.out.println("Ana menüye dönmek için 3'e basınız: ");
-                        int deleteOrUpdate = scanner.nextInt();
-
-                        if(deleteOrUpdate == 1)
-                        {
-                            library.removeBookInLibraryBooks(selectedBook);
-                        }else if(deleteOrUpdate == 2)
-                        {
-                            int updatingChoice = 0;
-                            while(updatingChoice != 9)
-                            {
-                                System.out.println("Kitabın adını güncellemek için 1'e basınız: ");
-                                System.out.println("Kitabın yazarını güncellemek için 2'ye basınız: ");
-                                System.out.println("Kitabın fiyatını güncellemek için 3'e basınız: ");
-                                System.out.println("Kitabın baskısını güncellemek için 4'e basınız: ");
-                                System.out.println("Ana menüye dönmek için 9'a basınız: ");
-                                updatingChoice = scanner.nextInt();
-                                scanner.nextLine();
-
-                                if(updatingChoice == 1)
-                                {
-                                    System.out.println("Kitabın adını giriniz: ");
-                                    String updateBookName = scanner.nextLine();
-                                    selectedBook.setName(updateBookName);
-                                }else if(updatingChoice == 2)
-                                {
-                                    System.out.println("Kitabın yazarın adını giriniz: ");
-                                    String updateAuthorName = scanner.nextLine();
-                                    selectedBook.getAuthor().getAuthorBooks().remove(selectedBook);
-                                    selectedBook.setAuthor(new Author(updateAuthorName));
-                                    selectedBook.getAuthor().addNewBook(selectedBook);
-                                    library.addLibraryBooksAuthor(selectedBook.getAuthor());
-                                }else if(updatingChoice == 3)
-                                {
-                                    System.out.println("Kitabın fiyatını giriniz: ");
-                                    Double updateBookPrice = scanner.nextDouble();
-                                    selectedBook.setPrice(updateBookPrice);
-                                }else if(updatingChoice == 4)
-                                {
-                                    System.out.println("Kitabın baskısını giriniz: ");
-                                    Double updateBookEdition = scanner.nextDouble();
-                                    selectedBook.setEdition(updateBookEdition);
-                                }
-                            }
-                        } else if (deleteOrUpdate == 3) {
-                            continue;
-                        } else{
-                            System.out.println("Yanlış seçim yaptınız");
-                        }
-                    }else{
-                        System.out.println("Doğru seçim yapmadınız!!!");
-                    }
-                    break;
-                case 3:
-                    for (int i = 0; i < library.getLibraryBooks().size(); i++) {
-                        library.getLibraryBooks().get(i).display();
-                    }
-                    if(library.getLibraryBooks().isEmpty())
-                    {
-                        System.out.println("Kütüphanede hiç kitap yok!!!");
-                    }
-                    break;
-                case 4:
-                    System.out.println("Kitapları listelemek için kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
-                    int choiceCategory = scanner.nextInt();
-                    List<Book> selectedCategoryBooks;
-                    if(choiceCategory == 1)
-                    {
-                        selectedCategoryBooks = library.searchBookCategoryType(BookType.JOURNALS);
-
-                    }else if(choiceCategory == 2)
-                    {
-                        selectedCategoryBooks = library.searchBookCategoryType(BookType.MAGAZINES);
-                    }else if(choiceCategory == 3)
-                    {
-                        selectedCategoryBooks = library.searchBookCategoryType(BookType.STORY);
-                    }else if(choiceCategory == 4)
-                    {
-                        selectedCategoryBooks = library.searchBookCategoryType(BookType.STUDY);
-                    }else{
-                        System.out.println("Yanlış kategori seçtiniz!!");
-                        continue;
-                    }
-                    if(!selectedCategoryBooks.isEmpty() && selectedCategoryBooks != null)
-                    {
-                        selectedCategoryBooks.forEach(book -> book.display());
-                    }else{
-                        System.out.println("Kütüphanede bu kategoride kitap bulunamamaktadır!!!");
-                    }
-                    break;
-                case 5:
-                    System.out.println("Direk yazar adı girerek kitapları listelemek için 1'e basınız: ");
-                    System.out.println("Kütüphanedeki kitapların tüm yazarlarını listeleyip yazarı seçip kitapları listelemek için 2'ye basınız: ");
-                    int choiceAuthorOption = scanner.nextInt();
-                    if(choiceAuthorOption == 1 || choiceAuthorOption == 2)
-                    {
-                        if(choiceAuthorOption == 2)
-                        {
-                            System.out.println(library.getLibraryBooksAuthors());
-                            scanner.nextLine();
-                        }
-                        System.out.println("Yazara ait olan kitapları listelemek için yazarın adını giriniz: ");
-                        String booksOfAuthorName = scanner.nextLine();
-                        List<Book> booksOfAuthor = library.searchBookAuthorName(booksOfAuthorName);
-                        if(!booksOfAuthor.isEmpty() && booksOfAuthor != null)
-                        {
-                            booksOfAuthor.forEach(book -> book.display());
-                        }else{
-                            System.out.println("Bu yazara ait kitap bulunmamaktadır.");
-                        }
-                    }
-                    break;
-                case 6:
-                    System.out.println("Kütüphaneden kitap alabilmek için kütüphaneye kayıtlı kullanıcı olmanız gerekmektedir.");
-                    System.out.println("Kullanıcı kontrolü için lütfen adınızı giriniz: ");
-                    String userName = scanner.nextLine();
-                    MemberRecord member = librarian.searchAndGetMember(userName);
-                    if(member != null)
-                    {
-                        System.out.println(member+ "\n");
-                        System.out.println(member.getName() + " olarak kitap satın almak veya ödünç almak için 1'e basınız: ");
-                        System.out.println(member.getName() + " olarak sahip olduğunuz kitapları görmek için 2'ye basınız: ");
-                        int choiceBuyingOption = scanner.nextInt();
-                        if(choiceBuyingOption == 1)
-                        {
-                            library.getLibraryBooks().forEach(book -> book.display());
-                            System.out.println("Lütfen kütüphanede bulunan kitaplardan id numarasına göre bir kitap seçiniz: ");
-                            int choiceBookId = scanner.nextInt();
-                            selectedBook = library.searchBookId(choiceBookId);
-                            if(selectedBook != null)
-                            {
-                                if(member.getIssueBookValue() < 5)
-                                {
-                                    if(member.getMemberBalance() >= selectedBook.getPrice())
-                                    {
-                                        member.borrowBook(selectedBook,librarian);
-                                        member.incrementBookIssued();
-                                        System.out.println(member.getIssueBookValue());
-                                    }else{
-                                        System.out.println("Yeterli bakiyen olmadığı için artık kitap kiralayamazsın!!!");
-                                    }
-                                }else{
-                                    System.out.println("Kütüphaneden en fazla 5 kitap alabilirsiniz!!!");
-                                }
-                            }
-                        } else if (choiceBuyingOption == 2) {
-                            member.getReaderBooks().forEach(book -> book.display());
-                            if(!member.getReaderBooks().isEmpty())
-                            {
-                                System.out.println("Iade etmek istediğin kitap varsa 1'e basınız: ");
-                                System.out.println("Kitap faturalarını görmek için 2'ye basınız: ");
-                                System.out.println("Ana menüye dönmek için 9'a basınız: ");
-                                int choiceNumber = scanner.nextInt();
-                                if(choiceNumber == 1)
-                                {
-                                    System.out.println("Iade etmek istediğiniz kitabın idsini yazınız: ");
-                                    int choiceReturningBookId = scanner.nextInt();
-                                    Book returningBook = member.searchUserBookId(choiceReturningBookId);
-                                    if(returningBook != null)
-                                    {
-                                        member.returnBook(librarian,returningBook);
-                                        System.out.println("Kitap iadesi başarılı!!!");
-                                    }
-                                }else if(choiceNumber == 2)
-                                {
-                                    System.out.println("Fatura Listesi: \n");
-                                    System.out.println(member.getBillList());
-                                } else if (choiceNumber == 9) {
-                                    continue;
-                                }
-                            }else{
-                                System.out.println("Sahip olduğun hiç kitap yok!!!");
-                            }
-                        } else {
-                            System.out.println("Yanlış tuşa bastınız!!!");
-                        }
-                    }else{
-                        System.out.println("Bu isimde üye bulunamamıştır. Lütfen kütüphaneye üye olunuz.");
-                        System.out.println("Kütüphaneye üye olmak için 1'e basınız: ");
-                        System.out.println("Ana menüye dönmek için 9'a basınız: ");
-                        int choiceNewOperation = scanner.nextInt();
-                        if(choiceNewOperation == 1)
-                        {
-                            String memberName, memberAdress, memberPhone;
-                            MemberType memberType = null;
-                            System.out.println("Üyenin tipini seçiniz: 1-Öğrenci, 2-Fakülte");
-                            int choiceMemberType = scanner.nextInt();
-                            if(choiceMemberType == 1)
-                            {
-                                memberType = MemberType.STUDENT;
-                            } else if (choiceMemberType == 2) {
-                                memberType = MemberType.FACULTY;
-                            }else{
-                                System.out.println("Yanlış tuşa bastınız.");
-                            }
-                            scanner.nextLine();
-                            System.out.println("Üyenin ismini giriniz: ");
-                            memberName = scanner.nextLine();
-                            System.out.println("Üyenin adresini giriniz: ");
-                            memberAdress = scanner.nextLine();
-                            System.out.println("Üyenin telefonunu giriniz: ");
-                            memberPhone = scanner.nextLine();
-                            if(memberType != null && memberType == MemberType.STUDENT)
-                            {
-                                MemberRecord newStudent = new Student(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
-                                libraryReaders.add(newStudent);
-                                librarian.verifyMember(newStudent);
-                                System.out.println("Kayıt başarıyla tamamlandı!!!");
-                            }else if(memberType != null && memberType == MemberType.FACULTY)
-                            {
-                                MemberRecord newFaculty = new Faculty(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
-                                libraryReaders.add(newFaculty);
-                                librarian.verifyMember(newFaculty);
-                                System.out.println("Kayıt başarıyla tamamlandı!!!");
-                            }
-                        } else if (choiceNewOperation == 9) {
-                            continue;
-                        }
-                    }
-                    break;
-                case 7:
-                    System.out.println("Kütüphane bakiyesini görebilmek için kütüphane çalışanı olmalısınız.");
-                    System.out.println("Adınız: ");
-                    String librarianName = scanner.nextLine();
-                    System.out.println("Şifre: ");
-                    String librarianPassword = scanner.nextLine();
-                    if(librarianName.equals(librarian.getName()) && librarianPassword.equals(librarian.getPassword()))
-                    {
-                        System.out.println("Kütüphane çalışanı girişi başarılı!!!");
-                        System.out.println("Kütüphane bakiyesi hesaplanıyor....");
-                        System.out.println(library.getLibraryBalance());
-                        System.out.println("\n");
-                    }
-                default:
-                    break;
+                switch (choice)
+                {
+                    case 1:
+                        addNewBookForLibrary(scanner,library);
+                        break;
+                    case 2:
+                        selectBookInLibraryWithDifferentOptions(scanner,library);
+                        break;
+                    case 3:
+                        showAllBooksInLibrary(library);
+                        break;
+                    case 4:
+                        listBooksByCategoriesInLibrary(scanner, library);
+                        break;
+                    case 5:
+                        listBooksByAuthorInLibrary(scanner,library);
+                        break;
+                    case 6:
+                        borrowBooksInLibraryAsUser(scanner,library,librarian,libraryReaders);
+                        break;
+                    case 7:
+                        checkLibraryBalance(scanner,library,librarian);
+                        break;
+                    default:
+                        System.out.println("Yanlış bir sayı girdiniz veya yanlış bir tuşa bastınız\n");
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Yanlış bir tuşa bastınız!!!\n");
+                scanner.nextLine();
             }
+        }
+    }
+
+    public static void addNewBookForLibrary(Scanner scanner, Library library)
+    {
+        String authorName, name;
+        double price, edition;
+        System.out.println("Kitap yazarının ismini giriniz: : ");
+        authorName = scanner.nextLine();
+        System.out.println("Kitabın ismini giriniz: ");
+        name = scanner.nextLine();
+        System.out.println("Kitabın fiyatını giriniz: ");
+        price = scanner.nextDouble();
+        System.out.println("Kitabın baskı sürümünü giriniz: ");
+        edition = scanner.nextDouble();
+        Author newAuthor = library.checkAuthor(authorName);
+        System.out.println("Kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
+        int category = scanner.nextInt();
+        Book newBook = null;
+        if(category == 1)
+        {
+            newBook = new Journals(Book.stbookID,newAuthor,name,price,edition);
+        } else if (category == 2) {
+            newBook = new Magazines(Book.stbookID,newAuthor,name,price,edition);
+        } else if (category == 3) {
+            newBook = new StoryBooks(Book.stbookID,newAuthor,name,price,edition);
+        } else if (category == 4) {
+            newBook = new StudyBooks(Book.stbookID,newAuthor,name,price,edition);
+        }else{
+            System.out.println("Yanlış kategori seçimi yaptınız!!");
+            return;
+        }
+        library.addNewBookInLibraryBooks(newBook);
+        library.addLibraryBooksAuthor(newAuthor);
+        newAuthor.addNewBook(newBook);
+        System.out.println("Librarye yeni kitap ekledin.");
+    }
+
+    public static void selectBookInLibraryWithDifferentOptions(Scanner scanner, Library library)
+    {
+        System.out.println("Id'ye göre seçim yapmak için 1'e basınız: ");
+        System.out.println("İsme göre seçim yapmak için 2'ye basınız: ");
+        System.out.println("Yazara göre seçim yapmak için 3'e basınız: ");
+        int choiceType = scanner.nextInt();
+        Book selectedBook = null;
+        scanner.nextLine();
+        if(choiceType == 1)
+        {
+            System.out.println("Kitap seçmek için bir id giriniz: ");
+            int bookId = scanner.nextInt();
+            selectedBook = library.searchBookId(bookId);
+        }else if(choiceType == 2)
+        {
+            System.out.println("Kitap seçmek için bir isim giriniz: ");
+            String bookName = scanner.nextLine();
+            selectedBook = library.searchBookName(bookName);
+        }else if(choiceType == 3)
+        {
+            System.out.println("Kitap seçmek için bir yazar adı giriniz: ");
+            String authorNm = scanner.nextLine();
+            List<Book> booksOfAuthor = library.searchBookAuthorName(authorNm);
+            if(!booksOfAuthor.isEmpty() && booksOfAuthor != null)
+            {
+                System.out.println("Kitabın id numarası üzerinden bir kitap seçiniz: ");
+                int bookId = scanner.nextInt();
+                for(Book book : booksOfAuthor)
+                {
+                    if(book.getBookID() == bookId)
+                    {
+                        selectedBook = book;
+                    }
+                }
+            }
+        }else{
+            System.out.println("Yanlış seçim yaptınız!!");
+        }
+
+        if(selectedBook != null)
+        {
+            System.out.println("Seçili kitabı sistemden silmek için 1'e basınız: ");
+            System.out.println("Seçili kitabı güncellemek için 2'ye basınız: ");
+            System.out.println("Ana menüye dönmek için 3'e basınız: ");
+            int deleteOrUpdate = scanner.nextInt();
+
+            if(deleteOrUpdate == 1)
+            {
+                library.removeBookInLibraryBooks(selectedBook);
+            }else if(deleteOrUpdate == 2)
+            {
+                int updatingChoice = 0;
+                while(updatingChoice != 9)
+                {
+                    System.out.println("Kitabın adını güncellemek için 1'e basınız: ");
+                    System.out.println("Kitabın yazarını güncellemek için 2'ye basınız: ");
+                    System.out.println("Kitabın fiyatını güncellemek için 3'e basınız: ");
+                    System.out.println("Kitabın baskısını güncellemek için 4'e basınız: ");
+                    System.out.println("Ana menüye dönmek için 9'a basınız: ");
+                    updatingChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if(updatingChoice == 1)
+                    {
+                        System.out.println("Kitabın adını giriniz: ");
+                        String updateBookName = scanner.nextLine();
+                        selectedBook.setName(updateBookName);
+                    }else if(updatingChoice == 2)
+                    {
+                        System.out.println("Kitabın yazarın adını giriniz: ");
+                        String updateAuthorName = scanner.nextLine();
+                        selectedBook.getAuthor().getAuthorBooks().remove(selectedBook);
+                        selectedBook.setAuthor(new Author(updateAuthorName));
+                        selectedBook.getAuthor().addNewBook(selectedBook);
+                        library.addLibraryBooksAuthor(selectedBook.getAuthor());
+                    }else if(updatingChoice == 3)
+                    {
+                        System.out.println("Kitabın fiyatını giriniz: ");
+                        Double updateBookPrice = scanner.nextDouble();
+                        selectedBook.setPrice(updateBookPrice);
+                    }else if(updatingChoice == 4)
+                    {
+                        System.out.println("Kitabın baskısını giriniz: ");
+                        Double updateBookEdition = scanner.nextDouble();
+                        selectedBook.setEdition(updateBookEdition);
+                    }
+                }
+            } else if (deleteOrUpdate == 3) {
+                return;
+            } else{
+                System.out.println("Yanlış seçim yaptınız");
+                return;
+            }
+        }
+    }
+
+    public static void showAllBooksInLibrary(Library library)
+    {
+        for (int i = 0; i < library.getLibraryBooks().size(); i++) {
+            library.getLibraryBooks().get(i).display();
+        }
+        if(library.getLibraryBooks().isEmpty())
+        {
+            System.out.println("Kütüphanede hiç kitap yok!!!");
+        }
+    }
+
+    public static void listBooksByCategoriesInLibrary(Scanner scanner, Library library)
+    {
+        System.out.println("Kitapları listelemek için kategori seçiniz: 1-Journals, 2-Magazines, 3-Story, 4-Study");
+        int choiceCategory = scanner.nextInt();
+        List<Book> selectedCategoryBooks;
+        if(choiceCategory == 1)
+        {
+            selectedCategoryBooks = library.searchBookCategoryType(BookType.JOURNALS);
+
+        }else if(choiceCategory == 2)
+        {
+            selectedCategoryBooks = library.searchBookCategoryType(BookType.MAGAZINES);
+        }else if(choiceCategory == 3)
+        {
+            selectedCategoryBooks = library.searchBookCategoryType(BookType.STORY);
+        }else if(choiceCategory == 4)
+        {
+            selectedCategoryBooks = library.searchBookCategoryType(BookType.STUDY);
+        }else{
+            System.out.println("Yanlış kategori seçtiniz!!");
+            return;
+        }
+        if(!selectedCategoryBooks.isEmpty() && selectedCategoryBooks != null)
+        {
+            selectedCategoryBooks.forEach(book -> book.display());
+        }else{
+            System.out.println("Kütüphanede bu kategoride kitap bulunamamaktadır!!!");
+        }
+    }
+
+    public static void listBooksByAuthorInLibrary(Scanner scanner, Library library)
+    {
+        System.out.println("Direk yazar adı girerek kitapları listelemek için 1'e basınız: ");
+        System.out.println("Kütüphanedeki kitapların tüm yazarlarını listeleyip yazarı seçip kitapları listelemek için 2'ye basınız: ");
+        int choiceAuthorOption = scanner.nextInt();
+        scanner.nextLine();
+        if(choiceAuthorOption == 1 || choiceAuthorOption == 2)
+        {
+            if(choiceAuthorOption == 2)
+            {
+                System.out.println(library.getLibraryBooksAuthors());
+            }
+            System.out.println("Yazara ait olan kitapları listelemek için yazarın adını giriniz: ");
+            String booksOfAuthorName = scanner.nextLine();
+            List<Book> booksOfAuthor = library.searchBookAuthorName(booksOfAuthorName);
+            if(booksOfAuthor.isEmpty() || booksOfAuthor == null)
+            {
+                System.out.println("Bu yazara ait kitap bulunmamaktadır.");
+            }
+        }
+    }
+
+    public static void borrowBooksInLibraryAsUser(Scanner scanner, Library library, Librarian librarian, List<Reader> libraryReaders)
+    {
+        System.out.println("Kütüphaneden kitap alabilmek için kütüphaneye kayıtlı kullanıcı olmanız gerekmektedir.");
+        System.out.println("Kullanıcı kontrolü için lütfen adınızı giriniz: ");
+        String userName = scanner.nextLine();
+        MemberRecord member = librarian.searchAndGetMember(userName);
+        Book selectedBook = null;
+        if(member != null)
+        {
+            System.out.println(member+ "\n");
+            System.out.println(member.getName() + " olarak kitap satın almak veya ödünç almak için 1'e basınız: ");
+            System.out.println(member.getName() + " olarak sahip olduğunuz kitapları görmek için 2'ye basınız: ");
+            int choiceBuyingOption = scanner.nextInt();
+            if(choiceBuyingOption == 1)
+            {
+                library.getLibraryBooks().forEach(book -> book.display());
+                System.out.println("Lütfen kütüphanede bulunan kitaplardan id numarasına göre bir kitap seçiniz: ");
+                int choiceBookId = scanner.nextInt();
+                selectedBook = library.searchBookId(choiceBookId);
+                if(selectedBook != null)
+                {
+                    if(member.getIssueBookValue() < 5)
+                    {
+                        if(member.getMemberBalance() >= selectedBook.getPrice())
+                        {
+                            member.borrowBook(selectedBook,librarian);
+                            member.incrementBookIssued();
+                            System.out.println(member.getIssueBookValue());
+                        }else{
+                            System.out.println("Yeterli bakiyen olmadığı için artık kitap kiralayamazsın!!!");
+                        }
+                    }else{
+                        System.out.println("Kütüphaneden en fazla 5 kitap alabilirsiniz!!!");
+                    }
+                }
+            } else if (choiceBuyingOption == 2) {
+                member.getReaderBooks().forEach(book -> book.display());
+                if(!member.getReaderBooks().isEmpty())
+                {
+                    System.out.println("Iade etmek istediğin kitap varsa 1'e basınız: ");
+                    System.out.println("Kitap faturalarını görmek için 2'ye basınız: ");
+                    System.out.println("Ana menüye dönmek için 9'a basınız: ");
+                    int choiceNumber = scanner.nextInt();
+                    if(choiceNumber == 1)
+                    {
+                        System.out.println("Iade etmek istediğiniz kitabın idsini yazınız: ");
+                        int choiceReturningBookId = scanner.nextInt();
+                        Book returningBook = member.searchUserBookId(choiceReturningBookId);
+                        if(returningBook != null)
+                        {
+                            member.returnBook(librarian,returningBook);
+                            System.out.println("Kitap iadesi başarılı!!!");
+                        }
+                    }else if(choiceNumber == 2)
+                    {
+                        System.out.println("Fatura Listesi: \n");
+                        System.out.println(member.getBillList());
+                    } else if (choiceNumber == 9) {
+                        return;
+                    }
+                }else{
+                    System.out.println("Sahip olduğun hiç kitap yok!!!");
+                }
+            } else {
+                System.out.println("Yanlış tuşa bastınız!!!");
+            }
+        }else{
+            System.out.println("Bu isimde üye bulunamamıştır. Lütfen kütüphaneye üye olunuz.");
+            System.out.println("Kütüphaneye üye olmak için 1'e basınız: ");
+            System.out.println("Ana menüye dönmek için 9'a basınız: ");
+            int choiceNewOperation = scanner.nextInt();
+            if(choiceNewOperation == 1)
+            {
+                String memberName, memberAdress, memberPhone;
+                MemberType memberType = null;
+                System.out.println("Üyenin tipini seçiniz: 1-Öğrenci, 2-Fakülte");
+                int choiceMemberType = scanner.nextInt();
+                if(choiceMemberType == 1)
+                {
+                    memberType = MemberType.STUDENT;
+                } else if (choiceMemberType == 2) {
+                    memberType = MemberType.FACULTY;
+                }else{
+                    System.out.println("Yanlış tuşa bastınız.");
+                }
+                scanner.nextLine();
+                System.out.println("Üyenin ismini giriniz: ");
+                memberName = scanner.nextLine();
+                System.out.println("Üyenin adresini giriniz: ");
+                memberAdress = scanner.nextLine();
+                System.out.println("Üyenin telefonunu giriniz: ");
+                memberPhone = scanner.nextLine();
+                if(memberType != null && memberType == MemberType.STUDENT)
+                {
+                    MemberRecord newStudent = new Student(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
+                    libraryReaders.add(newStudent);
+                    librarian.verifyMember(newStudent);
+                    System.out.println("Kayıt başarıyla tamamlandı!!!");
+                }else if(memberType != null && memberType == MemberType.FACULTY)
+                {
+                    MemberRecord newFaculty = new Faculty(MemberRecord.stmemberID, memberType, memberName, memberAdress, memberPhone);
+                    libraryReaders.add(newFaculty);
+                    librarian.verifyMember(newFaculty);
+                    System.out.println("Kayıt başarıyla tamamlandı!!!");
+                }
+            } else if (choiceNewOperation == 9) {
+                return;
+            }
+        }
+    }
+
+    public static void checkLibraryBalance(Scanner scanner, Library library, Librarian librarian)
+    {
+        System.out.println("Kütüphane bakiyesini görebilmek için kütüphane çalışanı olmalısınız.");
+        System.out.println("Adınız: ");
+        String librarianName = scanner.nextLine();
+        System.out.println("Şifre: ");
+        String librarianPassword = scanner.nextLine();
+        if(librarianName.equals(librarian.getName()) && librarianPassword.equals(librarian.getPassword()))
+        {
+            System.out.println("Kütüphane çalışanı girişi başarılı!!!");
+            System.out.println("Kütüphane bakiyesi hesaplanıyor....");
+            System.out.println(library.getLibraryBalance());
+            System.out.println("\n");
         }
     }
 }
