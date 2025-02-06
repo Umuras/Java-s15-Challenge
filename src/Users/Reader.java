@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class Reader extends Person{
 
-    List<Book> readerBooks;
+    private List<Book> readerBooks;
 
     public Reader(String name)
     {

@@ -119,6 +119,7 @@ public abstract class Book {
         strBuilder.append("BookID: ").append(bookID).append("\n");
         strBuilder.append("BookName: ").append(name).append("\n");
         strBuilder.append("Book's Author: ").append(author.getName()).append("\n");
+        strBuilder.append("Book's Type: ").append(bookType).append("\n");
         strBuilder.append("Price: ").append(price).append("\n");
         strBuilder.append("Status: ").append(status).append("\n");
         strBuilder.append("Edition: ").append(edition).append("\n");
