@@ -32,4 +32,12 @@ public class Faculty extends MemberRecord{
     public void payBill(Book book) {
         addMemberBalance(-book.getPrice());
     }
+
+    @Override
+    public String toString()
+    {
+        return "Üye Adı: " + getName() + "\n" + "Üye Türü: " + getType() + "\n" + "Üye Adresi: " + getAddress() + "\n"
+                + "Üye Telefonu: " + getPhoneNo() + "\n" + "Üye Onay Durumu: " +getVerifiedMemberStatus() + "\n" +
+                "Üye Bakiyesi: " + getMemberBalance();
+    }
 }

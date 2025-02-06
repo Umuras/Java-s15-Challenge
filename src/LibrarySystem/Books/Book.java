@@ -90,6 +90,11 @@ public abstract class Book {
         this.bookType = bookType;
     }
 
+    public void setReader(Reader reader)
+    {
+        this.reader = reader;
+    }
+
     public Reader getOwner()
     {
         if(reader != null)
@@ -102,7 +107,10 @@ public abstract class Book {
 
     public void changeOwner(Reader newReader)
     {
-        newReader = reader;
+        if(BookStatus.BORROWLIBRARYBOOK.equals(this.status))
+        {
+            reader = newReader;
+        }
     }
 
     public void display()
@@ -120,11 +128,17 @@ public abstract class Book {
 
     public void updateStatus(BookStatus status)
     {
-        if(BookStatus.BORROWLIBRARYBOOK.name().equals(status.name()))
+        if(BookStatus.INLIBRARY.equals(this.status))
         {
-            this.dateOfPurchase = LocalDateTime.now();
+            if(BookStatus.BORROWLIBRARYBOOK.name().equals(status.name()))
+            {
+                this.dateOfPurchase = LocalDateTime.now();
+            }
+            this.status = status;
+        }else{
+            this.dateOfPurchase = null;
+            this.status = status;
         }
-        this.status = status;
     }
 
 

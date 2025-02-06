@@ -5,6 +5,7 @@ import LibrarySystem.Books.Book;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Reader extends Person{
 
@@ -18,7 +19,7 @@ public class Reader extends Person{
 
     public List<Book> getReaderBooks()
     {
-        return readerBooks;
+        return readerBooks.stream().collect(Collectors.toUnmodifiableList());
     }
 
     public void purchaseBook(Librarian librarian, Book book)
@@ -28,7 +29,7 @@ public class Reader extends Person{
             librarian.issueBook(this, book);
             readerBooks.add(book);
         }else{
-            System.out.println("Library hasn't this book");
+            System.out.println("Kütüphanede bu kitap bulunmamaktadır!!!");
         }
     }
 
@@ -39,18 +40,24 @@ public class Reader extends Person{
         {
             librarian.issueBook(this,book);
         }else{
-            System.out.println("Library hasn't this book");
+            System.out.println("Kütüphanede bu kitap bulunmamaktadır!!!");
         }
     }
 
     public void addBookToBookList(Book newBook)
     {
-        readerBooks.add(newBook);
+        if(!readerBooks.contains(newBook) && newBook != null)
+        {
+            readerBooks.add(newBook);
+        }
     }
 
     public void removeBookToBookList(Book removingBook)
     {
-        readerBooks.remove(removingBook);
+        if(removingBook != null)
+        {
+            readerBooks.remove(removingBook);
+        }
     }
 
     public Book searchUserBookId(int bookId)
@@ -62,7 +69,7 @@ public class Reader extends Person{
                 return readerBooks.get(i);
             }
         }
-        System.out.println("Kullanıcının bu idde bir kitabı yoktur.");
+        System.out.println("Kullanıcının bu id de bir kitabı yoktur.");
         return null;
     }
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Author extends Person{
 
@@ -19,7 +20,7 @@ public class Author extends Person{
 
     public List<Book> getAuthorBooks()
     {
-        return authorBooks;
+        return authorBooks.stream().collect(Collectors.toUnmodifiableList());
     }
 
     public void showBook()
@@ -49,9 +50,13 @@ public class Author extends Person{
         {
             authorBooks.add(newBook);
         }else{
-            System.out.println("This book already create it.");
+            System.out.println("Yazara ait bu kitap zaten listede var!!!");
         }
+    }
 
+    public void removeBookFromBookList(Book book)
+    {
+        authorBooks.remove(book);
     }
 
 

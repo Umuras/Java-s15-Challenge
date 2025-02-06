@@ -53,8 +53,11 @@ public class Librarian {
     //Kütüphane üyesini listeye ekliyorum.
     public void verifyMember(Reader member)
     {
-        ((MemberRecord)member).setVerifiedMemberStatus(true);
-        memberRecords.add((MemberRecord) member);
+        if(!((MemberRecord) member).getVerifiedMemberStatus() && !memberRecords.contains(((MemberRecord)member)))
+        {
+            ((MemberRecord)member).setVerifiedMemberStatus(true);
+            memberRecords.add((MemberRecord) member);
+        }
     }
 
     //Kitap vermek, kitap çıkarmak demek.
@@ -68,7 +71,7 @@ public class Librarian {
             ((MemberRecord)reader).payBill(book);
             library.addLibraryBalance(book.getPrice());
         }else{
-            System.out.println("Library hasn't this book");
+            System.out.println("Kütüphanede bu kitap bulunmamaktadır!!!");
         }
     }
 

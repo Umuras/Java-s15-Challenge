@@ -144,7 +144,7 @@ public class Main {
         library.addNewBookInLibraryBooks(newBook);
         library.addLibraryBooksAuthor(newAuthor);
         newAuthor.addNewBook(newBook);
-        System.out.println("Librarye yeni kitap ekledin.");
+        System.out.println("Kütüphaneye yeni kitap ekledin.\n");
     }
 
     public static void selectBookInLibraryWithDifferentOptions(Scanner scanner, Library library)
@@ -219,7 +219,7 @@ public class Main {
                     {
                         System.out.println("Kitabın yazarın adını giriniz: ");
                         String updateAuthorName = scanner.nextLine();
-                        selectedBook.getAuthor().getAuthorBooks().remove(selectedBook);
+                        selectedBook.getAuthor().removeBookFromBookList(selectedBook);
                         Author author = library.checkAuthor(updateAuthorName);
                         selectedBook.setAuthor(author);
                         selectedBook.getAuthor().addNewBook(selectedBook);
@@ -338,7 +338,6 @@ public class Main {
                         {
                             member.borrowBook(selectedBook,librarian);
                             member.incrementBookIssued();
-                            System.out.println(member.getIssueBookValue());
                         }else{
                             System.out.println("Yeterli bakiyen olmadığı için artık kitap kiralayamazsın!!!");
                         }
@@ -362,12 +361,17 @@ public class Main {
                         if(returningBook != null)
                         {
                             member.returnBook(librarian,returningBook);
+                            member.decrementBookIssued();
                             System.out.println("Kitap iadesi başarılı!!!");
                         }
                     }else if(choiceNumber == 2)
                     {
                         System.out.println("Fatura Listesi: \n");
-                        System.out.println(member.getBillList());
+                        for (StringBuilder bill : member.getBillList().values())
+                        {
+                            System.out.println(bill);
+                            System.out.println("\n");
+                        }
                     } else if (choiceNumber == 9) {
                         return;
                     }

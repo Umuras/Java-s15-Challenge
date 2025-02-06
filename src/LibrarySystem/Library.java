@@ -28,12 +28,12 @@ public class Library {
 
     public List<Book> getLibraryBooks()
     {
-        return libraryBooks;
+        return libraryBooks.stream().collect(Collectors.toUnmodifiableList());
     }
 
     public List<Reader> getLibraryReaders()
     {
-        return libraryReaders;
+        return libraryReaders.stream().collect(Collectors.toUnmodifiableList());
     }
 
     public Set<Author> getLibraryBooksAuthors()
@@ -66,7 +66,7 @@ public class Library {
             if(itr.next().equals(book))
             {
                 String bookName = book.getName();
-                book.getAuthor().getAuthorBooks().remove(book);
+                book.getAuthor().removeBookFromBookList(book);
                 itr.remove();
                 System.out.println(bookName + " kitabı başarıyla silindi");
             }
@@ -84,9 +84,9 @@ public class Library {
         {
             reader.addBookToBookList(lendBook);
             libraryBooks.remove(lendBook);
-            System.out.println("Lendbook operation finished.");
+            System.out.println("Kitap başarıyla ödünç/satın alındı.");
         }else{
-            System.out.println("Library hasn't this book");
+            System.out.println("Kütüphane bu kitaba sahip değil.");
         }
     }
 
